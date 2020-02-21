@@ -68,16 +68,16 @@ module Pod
     end
 
     def run
-      @message_bank.welcome_message
+      #@message_bank.welcome_message
 
-      platform = :iOS
+      platform = :ios
       #self.ask_with_answers("What platform do you want to use?", ["iOS", "macOS"]).to_sym
 
       case platform
         when :macos
           ConfigureMacOSSwift.perform(configurator: self)
         when :ios
-          framework = self.ask_with_answers("What language do you want to use?", ["Swift", "ObjC"]).to_sym
+          framework = :objc#self.ask_with_answers("What language do you want to use?", ["Swift", "ObjC"]).to_sym
           case framework
             when :swift
               ConfigureSwift.perform(configurator: self)
@@ -127,6 +127,9 @@ module Pod
     def replace_variables_in_files
       file_names = ['POD_LICENSE', 'POD_README.md', 'NAME.podspec', '.travis.yml', podfile_path]
       file_names.each do |file_name|
+        puts "bin start"
+        puts file_name
+        puts "bin end"
         text = File.read(file_name)
         text.gsub!("${POD_NAME}", @pod_name)
         text.gsub!("${REPO_NAME}", @pod_name.gsub('+', '-'))
